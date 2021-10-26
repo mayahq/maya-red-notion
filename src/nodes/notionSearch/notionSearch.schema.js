@@ -42,7 +42,8 @@ class NotionSearch extends Node {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${this.tokens.vals.access_token}`,
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Notion-Version": "2021-08-16"
             },
             body: JSON.stringify({
                 query: vals.query,
