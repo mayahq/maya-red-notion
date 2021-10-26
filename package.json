@@ -1,0 +1,28 @@
+{
+  "name": "maya-red-notion",
+  "version": "v0.0.1",
+  "description": "Maya module to automate notion",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mayahq/mayadev/issues"
+  },
+  "homepage": "#readme",
+  "dependencies": {
+    "@mayahq/module-sdk": "^0.4.11",
+    "@notionhq/client": "^0.4.4"
+  },
+  "nodepath": "src/nodes",
+  "nodeRedModuleName": "maya-red-notion",
+  "node-red": {
+    "nodes": {
+      "notion-search": "src/nodes/notionSearch/notionSearch.node.js"
+    }
+  }
+}
