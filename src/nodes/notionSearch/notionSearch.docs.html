@@ -1,20 +1,20 @@
 <h2 data-type="description-title">Description</h2>
-<p data-type="description-summary">Query opens tabs based on criteria like URL, muted status</p>
+<p data-type="description-summary">Notion search module responds with search results as to input string query from Notion pages user has given access</p>
 
-<h2>Config</h2>
+<h2>Config or Input</h2>
 <dl class="message-properties">
 
     <dt>
-        <span class="property-name">payload</span>
-        <span class="property-type">various</span>
-    </dt>
-    <dd>The configured payload of the message.</dd>
-
-    <dt class="optional">
-        <span class="property-name">topic</span> 
+        <span class="property-name">query</span>
         <span class="property-type">string</span>
     </dt>
-    <dd>An optional property</dd>
+    <dd>Takes a string as query either set in the node configuration or input from msg, flow or global object.</dd>
+
+    <dt class="optional">
+        <span class="property-name">page_size</span> 
+        <span class="property-type">number</span>
+    </dt>
+    <dd>Page size of the return response. Responds with 10 results by default.</dd>
 
 </dl>
 
@@ -26,12 +26,6 @@
         <span class="property-name">payload</span>
         <span class="property-type">various</span>
     </dt>
-    <dd>The configured payload of the message.</dd>
-
-    <dt class="optional">
-        <span class="property-name">topic</span> 
-        <span class="property-type">string</span>
-    </dt>
-    <dd>An optional property</dd>
+    <dd>The object containing search responses of Notion search query.</dd>
     
 </dl>
