@@ -38,8 +38,13 @@ class NotionQueryDb extends Node {
     }
 
     async onMessage(msg, vals) {
+    	console.log("vals", vals);
         this.setStatus("PROGRESS", "querying notion database...");
         var fetch = require("node-fetch"); // or fetch() is native in browsers
+        let config_body = {};
+        if(vals.filter && Object.keys(vals.filter).length > 0)	config_body["filter"] = vals.filter;
+        if(vals.sorts && Object.keys(vals.sorts).length > 0)	config_body["sorts"] = vals.sorts;
+        if(vals.start_cursor && vals.start_cursor.length > 0)	config_body["start_cursor"] = vals.start_cursor;
         let fetchConfig = {
             url: `https://api.notion.com/v1/databases/${vals.database_id}/query`,
             method: "POST",
@@ -49,9 +54,7 @@ class NotionQueryDb extends Node {
                 "Notion-Version": "2021-08-16"
             },
             body: JSON.stringify({
-                filter: vals.filter,
-                sorts: vals.sort,
-                start_cursor: vals.start_cursor,
+            	...config_body,
                 page_size: vals.page_size
             })
         }
