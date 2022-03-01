@@ -18,7 +18,7 @@ class NotionQueryDb extends Node {
         category: 'Maya Red Notion',
         isConfig: false,
         fields: {
-            databse_id: new fields.Typed({type: 'str', defaultVal: '', allowedTypes: ['msg', 'flow', 'global']}),
+            database_id: new fields.Typed({type: 'str', defaultVal: '', allowedTypes: ['msg', 'flow', 'global']}),
             filter: new fields.Typed({type: 'json', allowedTypes: ['msg', 'flow', 'global']}),
             sorts: new fields.Typed({type: 'json', allowedTypes: ['msg', 'flow', 'global']}),
             start_cursor: new fields.Typed({type: 'str', allowedTypes: ['msg', 'flow', 'global']}),
