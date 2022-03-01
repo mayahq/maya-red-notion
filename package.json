@@ -22,7 +22,10 @@
   "nodeRedModuleName": "maya-red-notion",
   "node-red": {
     "nodes": {
-      "notion-search": "src/nodes/notionSearch/notionSearch.node.js"
+      "notion-search": "src/nodes/notionSearch/notionSearch.node.js",
+      "notion-query-db": "src/nodes/notionQueryDb/notionQueryDb.node.js",
+      "notion-retrieve-db": "src/nodes/notionRetrieveDb/notionRetrieveDb.node.js",
+      "notion-update-db": "src/nodes/notionUpdateDb/notionUpdateDb.node.js"
     }
   }
 }

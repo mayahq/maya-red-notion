@@ -1,0 +1,210 @@
+<script type='text/javascript'>
+    RED.nodes.registerType("notion-query-db", {
+        category: "Maya Red Notion",
+        color: "#8BBDD9",
+        defaults: {
+            name: {
+                value: ""
+            },
+            isProfileConfigNode: {
+                value: false
+            },
+            databse_id: {
+                value: ""
+            },
+            payloadTypedatabse_id: {
+                value: "str"
+            },
+            filter: {
+                value: ""
+            },
+            payloadTypefilter: {
+                value: "json"
+            },
+            sorts: {
+                value: ""
+            },
+            payloadTypesorts: {
+                value: "json"
+            },
+            start_cursor: {
+                value: ""
+            },
+            payloadTypestart_cursor: {
+                value: "str"
+            },
+            page_size: {
+                value: "10"
+            },
+            payloadTypepage_size: {
+                value: "num"
+            },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "fa-file-code-o.png",
+        label: function() {
+            return this.name || "notion-query-db"
+        },
+        paletteLabel: "notion-query-db",
+        exportable: true,
+        oneditprepare: function() {
+            if (this.payloadTypedatabse_id === null) {
+                if (this.databse_id === "") {
+                    this.payloadTypedatabse_id = "date"
+                } else {
+                    this.payloadTypedatabse_id = "str"
+                }
+            } else if (this.payloadTypedatabse_id === 'string' || this.payloadTypedatabse_id === 'none') {
+                this.payloadTypedatabse_id = "str"
+            }
+
+            $("#node-input-payloadTypedatabse_id").val(this.payloadTypedatabse_id)
+            $("#node-input-databse_id").typedInput({
+                default: "str",
+                typeField: $("#node-input-payloadTypedatabse_id"),
+                types: ["msg", "flow", "global", "str"]
+            })
+            $("#node-input-databse_id").typedInput("type", this.payloadTypedatabse_id)
+
+            if (this.payloadTypefilter === null) {
+                if (this.filter === "") {
+                    this.payloadTypefilter = "date"
+                } else {
+                    this.payloadTypefilter = "json"
+                }
+            } else if (this.payloadTypefilter === 'string' || this.payloadTypefilter === 'none') {
+                this.payloadTypefilter = "json"
+            }
+
+            $("#node-input-payloadTypefilter").val(this.payloadTypefilter)
+            $("#node-input-filter").typedInput({
+                default: "json",
+                typeField: $("#node-input-payloadTypefilter"),
+                types: ["msg", "flow", "global", "json"]
+            })
+            $("#node-input-filter").typedInput("type", this.payloadTypefilter)
+
+            if (this.payloadTypesorts === null) {
+                if (this.sorts === "") {
+                    this.payloadTypesorts = "date"
+                } else {
+                    this.payloadTypesorts = "json"
+                }
+            } else if (this.payloadTypesorts === 'string' || this.payloadTypesorts === 'none') {
+                this.payloadTypesorts = "json"
+            }
+
+            $("#node-input-payloadTypesorts").val(this.payloadTypesorts)
+            $("#node-input-sorts").typedInput({
+                default: "json",
+                typeField: $("#node-input-payloadTypesorts"),
+                types: ["msg", "flow", "global", "json"]
+            })
+            $("#node-input-sorts").typedInput("type", this.payloadTypesorts)
+
+            if (this.payloadTypestart_cursor === null) {
+                if (this.start_cursor === "") {
+                    this.payloadTypestart_cursor = "date"
+                } else {
+                    this.payloadTypestart_cursor = "str"
+                }
+            } else if (this.payloadTypestart_cursor === 'string' || this.payloadTypestart_cursor === 'none') {
+                this.payloadTypestart_cursor = "str"
+            }
+
+            $("#node-input-payloadTypestart_cursor").val(this.payloadTypestart_cursor)
+            $("#node-input-start_cursor").typedInput({
+                default: "str",
+                typeField: $("#node-input-payloadTypestart_cursor"),
+                types: ["msg", "flow", "global", "str"]
+            })
+            $("#node-input-start_cursor").typedInput("type", this.payloadTypestart_cursor)
+
+            if (this.payloadTypepage_size === null) {
+                if (this.page_size === "") {
+                    this.payloadTypepage_size = "date"
+                } else {
+                    this.payloadTypepage_size = "num"
+                }
+            } else if (this.payloadTypepage_size === 'string' || this.payloadTypepage_size === 'none') {
+                this.payloadTypepage_size = "num"
+            }
+
+            $("#node-input-payloadTypepage_size").val(this.payloadTypepage_size)
+            $("#node-input-page_size").typedInput({
+                default: "num",
+                typeField: $("#node-input-payloadTypepage_size"),
+                types: ["msg", "flow", "global", "num"]
+            })
+            $("#node-input-page_size").typedInput("type", this.payloadTypepage_size)
+
+        },
+        oneditsave: function() {},
+        oneditcancel: function() {},
+        oneditdelete: function() {},
+        oneditresize: function() {},
+        onpaletteadd: function() {},
+        onpaletteremove: function() {}
+    });
+</script>
+
+<script type="text/html" data-template-name="notion-query-db">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-databse_id">databse_id</label>
+        <input type="text" id="node-input-databse_id"></input>
+        <input type="hidden" id="node-input-payloadTypedatabse_id">
+    </div>
+    <div class="form-row">
+        <label for="node-input-filter">filter</label>
+        <input type="text" id="node-input-filter"></input>
+        <input type="hidden" id="node-input-payloadTypefilter">
+    </div>
+    <div class="form-row">
+        <label for="node-input-sorts">sorts</label>
+        <input type="text" id="node-input-sorts"></input>
+        <input type="hidden" id="node-input-payloadTypesorts">
+    </div>
+    <div class="form-row">
+        <label for="node-input-start_cursor">start_cursor</label>
+        <input type="text" id="node-input-start_cursor"></input>
+        <input type="hidden" id="node-input-payloadTypestart_cursor">
+    </div>
+    <div class="form-row">
+        <label for="node-input-page_size">page_size</label>
+        <input type="text" id="node-input-page_size"></input>
+        <input type="hidden" id="node-input-payloadTypepage_size">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="notion-query-db">
+    <h2>Description</h2>
+    <p>Query opens tabs based on criteria like URL, muted status</p>
+
+    <h2>Config</h2>
+    <dl class="message-properties">
+
+        <dt>payload<span class="property-type">various</span></dt>
+        <dd>The configured payload of the message.</dd>
+
+        <dt class="optional">topic <span class="property-type">string</span></dt>
+        <dd>An optional property</dd>
+
+    </dl>
+
+
+    <h2>Outputs</h2>
+    <dl class="message-properties">
+
+        <dt>payload<span class="property-type">various</span></dt>
+        <dd>The configured payload of the message.</dd>
+
+        <dt class="optional">topic <span class="property-type">string</span></dt>
+        <dd>An optional property</dd>
+
+    </dl>
+</script>
