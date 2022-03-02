@@ -1,0 +1,224 @@
+<script type='text/javascript'>
+    RED.nodes.registerType("notion-create-page", {
+        category: "Maya Red Notion",
+        color: "#8BBDD9",
+        defaults: {
+            name: {
+                value: ""
+            },
+            isProfileConfigNode: {
+                value: false
+            },
+            url: {
+                value: ""
+            },
+            payloadTypeurl: {
+                value: "str"
+            },
+            parent_type: {
+                value: "database"
+            },
+            properties: {
+                value: "{}"
+            },
+            payloadTypeproperties: {
+                value: "json"
+            },
+            children: {
+                value: "{}"
+            },
+            payloadTypechildren: {
+                value: "json"
+            },
+            icon: {
+                value: "{}"
+            },
+            payloadTypeicon: {
+                value: "json"
+            },
+            cover: {
+                value: "{}"
+            },
+            payloadTypecover: {
+                value: "json"
+            },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "fa-file-code-o.png",
+        label: function() {
+            return this.name || "notion-create-page"
+        },
+        paletteLabel: "notion-create-page",
+        exportable: true,
+        oneditprepare: function() {
+            if (this.payloadTypeurl === null) {
+                if (this.url === "") {
+                    this.payloadTypeurl = "date"
+                } else {
+                    this.payloadTypeurl = "str"
+                }
+            } else if (this.payloadTypeurl === 'string' || this.payloadTypeurl === 'none') {
+                this.payloadTypeurl = "str"
+            }
+
+            $("#node-input-payloadTypeurl").val(this.payloadTypeurl)
+            $("#node-input-url").typedInput({
+                default: "str",
+                typeField: $("#node-input-payloadTypeurl"),
+                types: ["msg", "flow", "global", "str"]
+            })
+            $("#node-input-url").typedInput("type", this.payloadTypeurl)
+
+            const parent_typeselectFieldValues = ["database", "page"]
+            parent_typeselectFieldValues.forEach((val) => {
+                $("#node-input-parent_type").append($("<option></option>").attr("value", val).text(val))
+            })
+            $("#node-input-parent_type").val(this.parent_type)
+
+            if (this.payloadTypeproperties === null) {
+                if (this.properties === "") {
+                    this.payloadTypeproperties = "date"
+                } else {
+                    this.payloadTypeproperties = "json"
+                }
+            } else if (this.payloadTypeproperties === 'string' || this.payloadTypeproperties === 'none') {
+                this.payloadTypeproperties = "json"
+            }
+
+            $("#node-input-payloadTypeproperties").val(this.payloadTypeproperties)
+            $("#node-input-properties").typedInput({
+                default: "json",
+                typeField: $("#node-input-payloadTypeproperties"),
+                types: ["msg", "flow", "global", "json"]
+            })
+            $("#node-input-properties").typedInput("type", this.payloadTypeproperties)
+
+            if (this.payloadTypechildren === null) {
+                if (this.children === "") {
+                    this.payloadTypechildren = "date"
+                } else {
+                    this.payloadTypechildren = "json"
+                }
+            } else if (this.payloadTypechildren === 'string' || this.payloadTypechildren === 'none') {
+                this.payloadTypechildren = "json"
+            }
+
+            $("#node-input-payloadTypechildren").val(this.payloadTypechildren)
+            $("#node-input-children").typedInput({
+                default: "json",
+                typeField: $("#node-input-payloadTypechildren"),
+                types: ["msg", "flow", "global", "json"]
+            })
+            $("#node-input-children").typedInput("type", this.payloadTypechildren)
+
+            if (this.payloadTypeicon === null) {
+                if (this.icon === "") {
+                    this.payloadTypeicon = "date"
+                } else {
+                    this.payloadTypeicon = "json"
+                }
+            } else if (this.payloadTypeicon === 'string' || this.payloadTypeicon === 'none') {
+                this.payloadTypeicon = "json"
+            }
+
+            $("#node-input-payloadTypeicon").val(this.payloadTypeicon)
+            $("#node-input-icon").typedInput({
+                default: "json",
+                typeField: $("#node-input-payloadTypeicon"),
+                types: ["msg", "flow", "global", "json"]
+            })
+            $("#node-input-icon").typedInput("type", this.payloadTypeicon)
+
+            if (this.payloadTypecover === null) {
+                if (this.cover === "") {
+                    this.payloadTypecover = "date"
+                } else {
+                    this.payloadTypecover = "json"
+                }
+            } else if (this.payloadTypecover === 'string' || this.payloadTypecover === 'none') {
+                this.payloadTypecover = "json"
+            }
+
+            $("#node-input-payloadTypecover").val(this.payloadTypecover)
+            $("#node-input-cover").typedInput({
+                default: "json",
+                typeField: $("#node-input-payloadTypecover"),
+                types: ["msg", "flow", "global", "json"]
+            })
+            $("#node-input-cover").typedInput("type", this.payloadTypecover)
+
+        },
+        oneditsave: function() {},
+        oneditcancel: function() {},
+        oneditdelete: function() {},
+        oneditresize: function() {},
+        onpaletteadd: function() {},
+        onpaletteremove: function() {}
+    });
+</script>
+
+<script type="text/html" data-template-name="notion-create-page">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-url">url</label>
+        <input type="text" id="node-input-url"></input>
+        <input type="hidden" id="node-input-payloadTypeurl">
+    </div>
+    <div class="form-row">
+        <label for="node-input-parent_type">parent_type</label>
+        <select type="text" id="node-input-parent_type">
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-properties">properties</label>
+        <input type="text" id="node-input-properties"></input>
+        <input type="hidden" id="node-input-payloadTypeproperties">
+    </div>
+    <div class="form-row">
+        <label for="node-input-children">children</label>
+        <input type="text" id="node-input-children"></input>
+        <input type="hidden" id="node-input-payloadTypechildren">
+    </div>
+    <div class="form-row">
+        <label for="node-input-icon">icon</label>
+        <input type="text" id="node-input-icon"></input>
+        <input type="hidden" id="node-input-payloadTypeicon">
+    </div>
+    <div class="form-row">
+        <label for="node-input-cover">cover</label>
+        <input type="text" id="node-input-cover"></input>
+        <input type="hidden" id="node-input-payloadTypecover">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="notion-create-page">
+    <h2>Description</h2>
+    <p>Query opens tabs based on criteria like URL, muted status</p>
+
+    <h2>Config</h2>
+    <dl class="message-properties">
+
+        <dt>payload<span class="property-type">various</span></dt>
+        <dd>The configured payload of the message.</dd>
+
+        <dt class="optional">topic <span class="property-type">string</span></dt>
+        <dd>An optional property</dd>
+
+    </dl>
+
+
+    <h2>Outputs</h2>
+    <dl class="message-properties">
+
+        <dt>payload<span class="property-type">various</span></dt>
+        <dd>The configured payload of the message.</dd>
+
+        <dt class="optional">topic <span class="property-type">string</span></dt>
+        <dd>An optional property</dd>
+
+    </dl>
+</script>

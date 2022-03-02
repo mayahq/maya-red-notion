@@ -1,0 +1,137 @@
+<script type='text/javascript'>
+    RED.nodes.registerType("notion-update-page", {
+        category: "Maya Red Notion",
+        color: "#8BBDD9",
+        defaults: {
+            name: {
+                value: ""
+            },
+            isProfileConfigNode: {
+                value: false
+            },
+            url: {
+                value: ""
+            },
+            payloadTypeurl: {
+                value: "str"
+            },
+            properties: {
+                value: "{}"
+            },
+            payloadTypeproperties: {
+                value: "json"
+            },
+            archived: {
+                value: "null"
+            },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "fa-file-code-o.png",
+        label: function() {
+            return this.name || "notion-update-page"
+        },
+        paletteLabel: "notion-update-page",
+        exportable: true,
+        oneditprepare: function() {
+            if (this.payloadTypeurl === null) {
+                if (this.url === "") {
+                    this.payloadTypeurl = "date"
+                } else {
+                    this.payloadTypeurl = "str"
+                }
+            } else if (this.payloadTypeurl === 'string' || this.payloadTypeurl === 'none') {
+                this.payloadTypeurl = "str"
+            }
+
+            $("#node-input-payloadTypeurl").val(this.payloadTypeurl)
+            $("#node-input-url").typedInput({
+                default: "str",
+                typeField: $("#node-input-payloadTypeurl"),
+                types: ["msg", "flow", "global", "str"]
+            })
+            $("#node-input-url").typedInput("type", this.payloadTypeurl)
+
+            if (this.payloadTypeproperties === null) {
+                if (this.properties === "") {
+                    this.payloadTypeproperties = "date"
+                } else {
+                    this.payloadTypeproperties = "json"
+                }
+            } else if (this.payloadTypeproperties === 'string' || this.payloadTypeproperties === 'none') {
+                this.payloadTypeproperties = "json"
+            }
+
+            $("#node-input-payloadTypeproperties").val(this.payloadTypeproperties)
+            $("#node-input-properties").typedInput({
+                default: "json",
+                typeField: $("#node-input-payloadTypeproperties"),
+                types: ["msg", "flow", "global", "json"]
+            })
+            $("#node-input-properties").typedInput("type", this.payloadTypeproperties)
+
+            const archivedselectFieldValues = ["true", "false", "null"]
+            archivedselectFieldValues.forEach((val) => {
+                $("#node-input-archived").append($("<option></option>").attr("value", val).text(val))
+            })
+            $("#node-input-archived").val(this.archived)
+
+        },
+        oneditsave: function() {},
+        oneditcancel: function() {},
+        oneditdelete: function() {},
+        oneditresize: function() {},
+        onpaletteadd: function() {},
+        onpaletteremove: function() {}
+    });
+</script>
+
+<script type="text/html" data-template-name="notion-update-page">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-url">url</label>
+        <input type="text" id="node-input-url"></input>
+        <input type="hidden" id="node-input-payloadTypeurl">
+    </div>
+    <div class="form-row">
+        <label for="node-input-properties">properties</label>
+        <input type="text" id="node-input-properties"></input>
+        <input type="hidden" id="node-input-payloadTypeproperties">
+    </div>
+    <div class="form-row">
+        <label for="node-input-archived">archived</label>
+        <select type="text" id="node-input-archived">
+        </select>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="notion-update-page">
+    <h2>Description</h2>
+    <p>Query opens tabs based on criteria like URL, muted status</p>
+
+    <h2>Config</h2>
+    <dl class="message-properties">
+
+        <dt>payload<span class="property-type">various</span></dt>
+        <dd>The configured payload of the message.</dd>
+
+        <dt class="optional">topic <span class="property-type">string</span></dt>
+        <dd>An optional property</dd>
+
+    </dl>
+
+
+    <h2>Outputs</h2>
+    <dl class="message-properties">
+
+        <dt>payload<span class="property-type">various</span></dt>
+        <dd>The configured payload of the message.</dd>
+
+        <dt class="optional">topic <span class="property-type">string</span></dt>
+        <dd>An optional property</dd>
+
+    </dl>
+</script>

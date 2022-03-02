@@ -2,10 +2,10 @@ const {
     Node,
     Schema,
     fields
-} = require('@mayahq/module-sdk')
-const {getDatabaseId} = require("../../util")
+} = require('@mayahq/module-sdk');
+const {getPageId} = require("../../util")
 
-class NotionUpdateDb extends Node {
+class NotionUpdatePage extends Node {
     constructor(node, RED, opts) {
         super(node, RED, {
             ...opts,
@@ -14,13 +14,14 @@ class NotionUpdateDb extends Node {
     }
 
     static schema = new Schema({
-        name: 'notion-update-db',
-        label: 'notion-update-db',
+        name: 'notion-update-page',
+        label: 'notion-update-page',
         category: 'Maya Red Notion',
         isConfig: false,
         fields: {
             url: new fields.Typed({type: 'str', defaultVal: '', allowedTypes: ['msg', 'flow', 'global']}),
             properties: new fields.Typed({type: 'json', defaultVal: '{}', allowedTypes: ['msg', 'flow', 'global']}),
+            archived: new fields.Select({ options: ['true', 'false', 'null'], defaultVal: 'null' }),
         },
 
     })
@@ -37,22 +38,21 @@ class NotionUpdateDb extends Node {
 
     async onMessage(msg, vals) {
         console.log("vals", vals);
-        this.setStatus("PROGRESS", "updating notion database...");
+        this.setStatus("PROGRESS", "updating notion page...");
         var fetch = require("node-fetch"); // or fetch() is native in browsers
-        let database_id = getDatabaseId(vals.url)
+        let page_id = getPageId(vals.url)
         let config_body = {};
         if(vals.properties && Object.keys(vals.properties).length > 0)	config_body["properties"] = vals.properties;
+        if(vals.archived !== 'null')    config_body["archived"] = vals.archived === 'true';
         let fetchConfig = {
-            url: `https://api.notion.com/v1/databases/${database_id}`,
+            url: `https://api.notion.com/v1/pages/${page_id}`,
             method: "PATCH",
             headers: {
                 "Authorization": `Bearer ${this.tokens.vals.access_token}`,
                 "Content-Type": "application/json",
                 "Notion-Version": "2021-08-16"
             },
-            body: JSON.stringify({
-            	...config_body,
-            })
+            body: JSON.stringify(config_body)
         }
         try{
             let res = await fetch(fetchConfig.url, 
@@ -95,7 +95,7 @@ class NotionUpdateDb extends Node {
                 
             }
             msg.payload = json;
-            this.setStatus("SUCCESS", "notion database updated");
+            this.setStatus("SUCCESS", "notion page updated");
             return msg;
         }
         catch(err){
@@ -108,4 +108,4 @@ class NotionUpdateDb extends Node {
     }
 }
 
-module.exports = NotionUpdateDb
+module.exports = NotionUpdatePage

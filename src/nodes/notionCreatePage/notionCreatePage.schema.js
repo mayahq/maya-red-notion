@@ -2,10 +2,10 @@ const {
     Node,
     Schema,
     fields
-} = require('@mayahq/module-sdk')
-const {getDatabaseId} = require("../../util")
+} = require('@mayahq/module-sdk');
+const {getPageId, getDatabaseId} = require("../../util");
 
-class NotionUpdateDb extends Node {
+class NotionCreatePage extends Node {
     constructor(node, RED, opts) {
         super(node, RED, {
             ...opts,
@@ -14,13 +14,17 @@ class NotionUpdateDb extends Node {
     }
 
     static schema = new Schema({
-        name: 'notion-update-db',
-        label: 'notion-update-db',
+        name: 'notion-create-page',
+        label: 'notion-create-page',
         category: 'Maya Red Notion',
         isConfig: false,
         fields: {
             url: new fields.Typed({type: 'str', defaultVal: '', allowedTypes: ['msg', 'flow', 'global']}),
+            parent_type: new fields.Select({ options: ['database', 'page'], defaultVal: 'database' }),
             properties: new fields.Typed({type: 'json', defaultVal: '{}', allowedTypes: ['msg', 'flow', 'global']}),
+            children: new fields.Typed({type: 'json', defaultVal: '{}', allowedTypes: ['msg', 'flow', 'global']}),
+            icon: new fields.Typed({type: 'json', defaultVal: '{}', allowedTypes: ['msg', 'flow', 'global']}),
+            cover: new fields.Typed({type: 'json', defaultVal: '{}', allowedTypes: ['msg', 'flow', 'global']}),
         },
 
     })
@@ -37,22 +41,27 @@ class NotionUpdateDb extends Node {
 
     async onMessage(msg, vals) {
         console.log("vals", vals);
-        this.setStatus("PROGRESS", "updating notion database...");
+        this.setStatus("PROGRESS", "creating notion page...");
         var fetch = require("node-fetch"); // or fetch() is native in browsers
-        let database_id = getDatabaseId(vals.url)
         let config_body = {};
-        if(vals.properties && Object.keys(vals.properties).length > 0)	config_body["properties"] = vals.properties;
+        if(vals.parent_type === 'database'){
+            config_body["parent"]["database_id"] = getDatabaseId(vals.url);
+        }
+        else{
+            config_body["parent"]["page_id"] = getPageId(vals.url);
+        }
+        if(vals.children && Object.keys(vals.children).length > 0)	config_body["children"] = vals.children;
+        if(vals.icon && Object.keys(vals.icon).length > 0)	config_body["icon"] = vals.icon;
+        if(vals.cover && Object.keys(vals.cover).length > 0)	config_body["cover"] = vals.cover;
         let fetchConfig = {
-            url: `https://api.notion.com/v1/databases/${database_id}`,
-            method: "PATCH",
+            url: `https://api.notion.com/v1/pages`,
+            method: "POST",
             headers: {
                 "Authorization": `Bearer ${this.tokens.vals.access_token}`,
                 "Content-Type": "application/json",
                 "Notion-Version": "2021-08-16"
             },
-            body: JSON.stringify({
-            	...config_body,
-            })
+            body: JSON.stringify(config_body)
         }
         try{
             let res = await fetch(fetchConfig.url, 
@@ -95,7 +104,7 @@ class NotionUpdateDb extends Node {
                 
             }
             msg.payload = json;
-            this.setStatus("SUCCESS", "notion database updated");
+            this.setStatus("SUCCESS", "notion page created");
             return msg;
         }
         catch(err){
@@ -108,4 +117,4 @@ class NotionUpdateDb extends Node {
     }
 }
 
-module.exports = NotionUpdateDb
+module.exports = NotionCreatePage
