@@ -49,25 +49,5 @@
     "origin": {
       "moduleId": "618dda9bcae9c724d9eb448c"
     }
-  },
-  "mayaDetails": {
-    "name": "Notion Module",
-    "version": "0.0.1",
-    "description": "Maya module to access all frequently needed functions of Notion",
-    "author": "dush-t",
-    "type": "git",
-    "needsUserProfile": true,
-    "configType": {
-      "name": "Notion Authentication",
-      "oid": "618ddb9f4a0bf83e83b7170e"
-    },
-    "thumbnail": "",
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/mayahq/maya-red-notion.git"
-    },
-    "origin": {
-      "moduleId": "618dda9bcae9c724d9eb448c"
-    }
   }
 }
