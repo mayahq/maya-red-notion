@@ -9,20 +9,20 @@
             isProfileConfigNode: {
                 value: false
             },
-            database_id: {
+            url: {
                 value: ""
             },
-            payloadTypedatabase_id: {
+            payloadTypeurl: {
                 value: "str"
             },
             filter: {
-                value: ""
+                value: "{}"
             },
             payloadTypefilter: {
                 value: "json"
             },
             sorts: {
-                value: ""
+                value: "{}"
             },
             payloadTypesorts: {
                 value: "json"
@@ -49,23 +49,23 @@
         paletteLabel: "notion-query-db",
         exportable: true,
         oneditprepare: function() {
-            if (this.payloadTypedatabase_id === null) {
-                if (this.database_id === "") {
-                    this.payloadTypedatabase_id = "date"
+            if (this.payloadTypeurl === null) {
+                if (this.url === "") {
+                    this.payloadTypeurl = "date"
                 } else {
-                    this.payloadTypedatabase_id = "str"
+                    this.payloadTypeurl = "str"
                 }
-            } else if (this.payloadTypedatabase_id === 'string' || this.payloadTypedatabase_id === 'none') {
-                this.payloadTypedatabase_id = "str"
+            } else if (this.payloadTypeurl === 'string' || this.payloadTypeurl === 'none') {
+                this.payloadTypeurl = "str"
             }
 
-            $("#node-input-payloadTypedatabase_id").val(this.payloadTypedatabase_id)
-            $("#node-input-database_id").typedInput({
+            $("#node-input-payloadTypeurl").val(this.payloadTypeurl)
+            $("#node-input-url").typedInput({
                 default: "str",
-                typeField: $("#node-input-payloadTypedatabase_id"),
+                typeField: $("#node-input-payloadTypeurl"),
                 types: ["msg", "flow", "global", "str"]
             })
-            $("#node-input-database_id").typedInput("type", this.payloadTypedatabase_id)
+            $("#node-input-url").typedInput("type", this.payloadTypeurl)
 
             if (this.payloadTypefilter === null) {
                 if (this.filter === "") {
@@ -155,9 +155,9 @@
         <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
     </div>
     <div class="form-row">
-        <label for="node-input-database_id">database_id</label>
-        <input type="text" id="node-input-database_id"></input>
-        <input type="hidden" id="node-input-payloadTypedatabase_id">
+        <label for="node-input-url">url</label>
+        <input type="text" id="node-input-url"></input>
+        <input type="hidden" id="node-input-payloadTypeurl">
     </div>
     <div class="form-row">
         <label for="node-input-filter">filter</label>

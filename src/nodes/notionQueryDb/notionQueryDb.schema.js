@@ -3,7 +3,7 @@ const {
     Schema,
     fields
 } = require('@mayahq/module-sdk')
-
+const {getDatabaseId} = require("../../util")
 class NotionQueryDb extends Node {
     constructor(node, RED, opts) {
         super(node, RED, {
@@ -18,13 +18,12 @@ class NotionQueryDb extends Node {
         category: 'Maya Red Notion',
         isConfig: false,
         fields: {
-            database_id: new fields.Typed({type: 'str', defaultVal: '', allowedTypes: ['msg', 'flow', 'global']}),
-            filter: new fields.Typed({type: 'json', allowedTypes: ['msg', 'flow', 'global']}),
-            sorts: new fields.Typed({type: 'json', allowedTypes: ['msg', 'flow', 'global']}),
+            url: new fields.Typed({type: 'str', defaultVal: '', allowedTypes: ['msg', 'flow', 'global']}),
+            filter: new fields.Typed({type: 'json', defaultVal: '{}', allowedTypes: ['msg', 'flow', 'global']}),
+            sorts: new fields.Typed({type: 'json', defaultVal: '{}', allowedTypes: ['msg', 'flow', 'global']}),
             start_cursor: new fields.Typed({type: 'str', allowedTypes: ['msg', 'flow', 'global']}),
             page_size: new fields.Typed({type: 'num', defaultVal: 10, allowedTypes: ['msg', 'flow', 'global']}),
         },
-
     })
 
     onInit() {
@@ -37,16 +36,19 @@ class NotionQueryDb extends Node {
         return newTokens
     }
 
+    
+
     async onMessage(msg, vals) {
     	console.log("vals", vals);
         this.setStatus("PROGRESS", "querying notion database...");
         var fetch = require("node-fetch"); // or fetch() is native in browsers
+        let database_id = getDatabaseId(vals.url)
         let config_body = {};
         if(vals.filter && Object.keys(vals.filter).length > 0)	config_body["filter"] = vals.filter;
         if(vals.sorts && Object.keys(vals.sorts).length > 0)	config_body["sorts"] = vals.sorts;
         if(vals.start_cursor && vals.start_cursor.length > 0)	config_body["start_cursor"] = vals.start_cursor;
         let fetchConfig = {
-            url: `https://api.notion.com/v1/databases/${vals.database_id}/query`,
+            url: `https://api.notion.com/v1/databases/${database_id}/query`,
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${this.tokens.vals.access_token}`,

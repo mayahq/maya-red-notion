@@ -1,7 +1,9 @@
 const {
     Node,
-    Schema
+    Schema,
+    fields
 } = require('@mayahq/module-sdk')
+const {getDatabaseId} = require("../../util")
 
 class NotionRetrieveDb extends Node {
     constructor(node, RED, opts) {
@@ -17,7 +19,7 @@ class NotionRetrieveDb extends Node {
         category: 'Maya Red Notion',
         isConfig: false,
         fields: {
-            // Whatever custom fields the node needs.
+            url: new fields.Typed({type: 'str', defaultVal: '', allowedTypes: ['msg', 'flow', 'global']}),
         },
 
     })
@@ -26,9 +28,75 @@ class NotionRetrieveDb extends Node {
         // Do something on initialization of node
     }
 
+    async refreshTokens() {
+        const newTokens = await refresh(this)
+        await this.tokens.set(newTokens)
+        return newTokens
+    }
+
     async onMessage(msg, vals) {
-        // Handle the message. The returned value will
-        // be sent as the message to any further nodes.
+        this.setStatus("PROGRESS", "retrieving notion database...");
+        var fetch = require("node-fetch"); // or fetch() is native in browsers
+        let database_id = getDatabaseId(vals.url)
+        
+        let fetchConfig = {
+            url: `https://api.notion.com/v1/databases/${database_id}`,
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${this.tokens.vals.access_token}`,
+                "Content-Type": "application/json",
+                "Notion-Version": "2021-08-16"
+            }
+        }
+        try{
+            let res = await fetch(fetchConfig.url, 
+            {
+                method: fetchConfig.method,
+                headers: fetchConfig.headers,
+            });
+            let json = await res.json();
+            console.log(json);
+            if(json.error){
+                if(json.error.code === 401){
+                    const { access_token } = await this.refreshTokens()
+                    if (!access_token) {
+                        this.setStatus('ERROR', 'Failed to refresh access token')
+                        msg["__isError"] = true;
+                        msg.error = {
+                            reason: 'TOKEN_REFRESH_FAILED',
+                        }
+                        return msg
+                    }
+                    fetchConfig.headers.Authorization = `Bearer ${access_token}`;
+                    res = await fetch(fetchConfig.url, 
+                            {
+                                method: fetchConfig.method,
+                                headers: fetchConfig.headers
+                            });
+                    json = await res.json();
+                    if(json.error){
+                        msg.error = json.error;
+                        this.setStatus("ERROR", json.error.message);
+                        return msg;
+                    }
+                } else {
+                    msg["__isError"] = true;
+                    msg.error = json.error;
+                    this.setStatus("ERROR", json.error.message);
+                    return msg;
+                }
+                
+            }
+            msg.payload = json;
+            this.setStatus("SUCCESS", "fetched");
+            return msg;
+        }
+        catch(err){
+            msg["__isError"] = true;
+            msg.error = err;
+            this.setStatus("ERROR", "error occurred");
+            return msg;
+        }
 
     }
 }
