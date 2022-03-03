@@ -109,29 +109,40 @@
 </script>
 
 <script type="text/html" data-help-name="notion-update-page">
-    <h2>Description</h2>
-    <p>Query opens tabs based on criteria like URL, muted status</p>
+    <h2 data-type="description-title">Description</h2>
+    <p data-type="description-summary">Notion node that helps you update a notion page. For more information visit: <a href="https://developers.notion.com/reference/patch-page">Update Notion Page API docs</a></p>
 
-    <h2>Config</h2>
+    <h2>Inputs</h2>
     <dl class="message-properties">
 
-        <dt>payload<span class="property-type">various</span></dt>
-        <dd>The configured payload of the message.</dd>
+        <dt>
+            <span class="property-name">url</span>
+            <span class="property-type">string</span>
+        </dt>
+        <dd>URL of the parent database of parent page</dd>
 
-        <dt class="optional">topic <span class="property-type">string</span></dt>
-        <dd>An optional property</dd>
+        <dt>
+            <span class="property-name">properties</span>
+            <span class="property-type">json</span>
+        </dt>
+        <dd>Properties of the database that you want to update</dd>
+
+        <dt>
+            <span class="property-name">archived</span>
+            <span class="property-type">enum</span>
+        </dt>
+        <dd>null: no change, true: archives a notion page and false: un-archives an archived notion page</dd>
 
     </dl>
-
 
     <h2>Outputs</h2>
     <dl class="message-properties">
 
-        <dt>payload<span class="property-type">various</span></dt>
-        <dd>The configured payload of the message.</dd>
-
-        <dt class="optional">topic <span class="property-type">string</span></dt>
-        <dd>An optional property</dd>
+        <dt>
+            <span class="property-name">payload</span>
+            <span class="property-type">various</span>
+        </dt>
+        <dd>Pageg object with updated properties</dd>
 
     </dl>
 </script>

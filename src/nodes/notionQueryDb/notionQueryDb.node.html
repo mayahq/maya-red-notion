@@ -182,29 +182,52 @@
 </script>
 
 <script type="text/html" data-help-name="notion-query-db">
-    <h2>Description</h2>
-    <p>Query opens tabs based on criteria like URL, muted status</p>
+    <h2 data-type="description-title">Description</h2>
+    <p data-type="description-summary">Notion node that helps you query a notion database. For more information visit: <a href="https://developers.notion.com/reference/post-database-query">Query DB API docs</a></p>
 
-    <h2>Config</h2>
+    <h2>Inputs</h2>
     <dl class="message-properties">
 
-        <dt>payload<span class="property-type">various</span></dt>
-        <dd>The configured payload of the message.</dd>
+        <dt>
+            <span class="property-name">url</span>
+            <span class="property-type">string</span>
+        </dt>
+        <dd>URL of the parent database of parent page</dd>
 
-        <dt class="optional">topic <span class="property-type">string</span></dt>
-        <dd>An optional property</dd>
+        <dt class="optional">
+            <span class="property-name">filter</span>
+            <span class="property-type">json</span>
+        </dt>
+        <dd>Filter options to filter results by property values</dd>
+
+        <dt class="optional">
+            <span class="property-name">sorts</span>
+            <span class="property-type">json</span>
+        </dt>
+        <dd>Sort query results by properties</dd>
+
+        <dt class="optional">
+            <span class="property-name">start_cursor</span>
+            <span class="property-type">string</span>
+        </dt>
+        <dd>Used for pagination</dd>
+
+        <dt class="optional">
+            <span class="property-name">page_size</span>
+            <span class="property-type">num</span>
+        </dt>
+        <dd>Number of results to be returned</dd>
 
     </dl>
-
 
     <h2>Outputs</h2>
     <dl class="message-properties">
 
-        <dt>payload<span class="property-type">various</span></dt>
-        <dd>The configured payload of the message.</dd>
-
-        <dt class="optional">topic <span class="property-type">string</span></dt>
-        <dd>An optional property</dd>
+        <dt>
+            <span class="property-name">payload</span>
+            <span class="property-type">various</span>
+        </dt>
+        <dd>Results returned by database query</dd>
 
     </dl>
 </script>

@@ -196,29 +196,58 @@
 </script>
 
 <script type="text/html" data-help-name="notion-create-page">
-    <h2>Description</h2>
-    <p>Query opens tabs based on criteria like URL, muted status</p>
+    <h2 data-type="description-title">Description</h2>
+    <p data-type="description-summary">Notion node that helps you create a new notion page. For more information visit: <a href="https://developers.notion.com/reference/post-page">Create Page API docs</a></p>
 
-    <h2>Config</h2>
+    <h2>Inputs</h2>
     <dl class="message-properties">
 
-        <dt>payload<span class="property-type">various</span></dt>
-        <dd>The configured payload of the message.</dd>
+        <dt>
+            <span class="property-name">url</span>
+            <span class="property-type">string</span>
+        </dt>
+        <dd>URL of the parent database of parent page</dd>
 
-        <dt class="optional">topic <span class="property-type">string</span></dt>
-        <dd>An optional property</dd>
+        <dt>
+            <span class="property-name">parent_type</span>
+            <span class="property-type">enum</span>
+        </dt>
+        <dd>database: if parent is a database or page: if parent is a page</dd>
+
+        <dt>
+            <span class="property-name">properties</span>
+            <span class="property-type">json</span>
+        </dt>
+        <dd>The properties object of the page conforming to the properties of its parent</dd>
+
+        <dt class="optional">
+            <span class="property-name">children</span>
+            <span class="property-type">json</span>
+        </dt>
+        <dd>Children items for the page</dd>
+
+        <dt class="optional">
+            <span class="property-name">icon</span>
+            <span class="property-type">json</span>
+        </dt>
+        <dd>To specify the icon of the page</dd>
+
+        <dt class="optional">
+            <span class="property-name">cover</span>
+            <span class="property-type">json</span>
+        </dt>
+        <dd>To specify the cover of the page</dd>
 
     </dl>
-
 
     <h2>Outputs</h2>
     <dl class="message-properties">
 
-        <dt>payload<span class="property-type">various</span></dt>
-        <dd>The configured payload of the message.</dd>
-
-        <dt class="optional">topic <span class="property-type">string</span></dt>
-        <dd>An optional property</dd>
+        <dt>
+            <span class="property-name">payload</span>
+            <span class="property-type">various</span>
+        </dt>
+        <dd>Contains the http response from notion create page API</dd>
 
     </dl>
 </script>

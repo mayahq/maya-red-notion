@@ -1,25 +1,24 @@
-<h2>Description</h2>
-<p>Query opens tabs based on criteria like URL, muted status</p>
+<h2 data-type="description-title">Description</h2>
+<p data-type="description-summary">Notion node that helps you retieve a notion database. For more information visit: <a href="https://developers.notion.com/reference/retrieve-a-database">Retrieve DB API docs</a></p>
 
-<h2>Config</h2>
+<h2>Inputs</h2>
 <dl class="message-properties">
 
-    <dt>payload<span class="property-type">various</span></dt>
-    <dd>The configured payload of the message.</dd>
-
-    <dt class="optional">topic <span class="property-type">string</span></dt>
-    <dd>An optional property</dd>
+    <dt>
+        <span class="property-name">url</span>
+        <span class="property-type">string</span>
+    </dt>
+    <dd>URL of the parent database of parent page</dd>
 
 </dl>
-
 
 <h2>Outputs</h2>
 <dl class="message-properties">
 
-    <dt>payload<span class="property-type">various</span></dt>
-    <dd>The configured payload of the message.</dd>
-
-    <dt class="optional">topic <span class="property-type">string</span></dt>
-    <dd>An optional property</dd>
+    <dt>
+        <span class="property-name">payload</span>
+        <span class="property-type">various</span>
+    </dt>
+    <dd>Database object along with its properties and title</dd>
     
 </dl>
