@@ -8,14 +8,14 @@ const getDatabaseId = (url) => {
 }
 
 const getPageId = (url) => {
-    let indexOfDash = str.lastIndexOf('-');
-    let indexOfHash = str.lastIndexOf('#');
-    let len = indexOfHash > indexOfDash ? indexOfHash : str.length;
+    let indexOfDash = url.lastIndexOf('-');
+    let indexOfHash = url.lastIndexOf('#');
+    let len = indexOfHash > indexOfDash ? indexOfHash : url.length;
     return url.substring(indexOfDash+1 , indexOfHash );
 }
 
 const getBlockId = (url) => {
-    return url.substring(str.lastIndexOf('#')+1 , str.length);
+    return url.substring(url.lastIndexOf('#')+1 , url.length);
 }
 
 module.exports = {
