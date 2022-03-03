@@ -43,7 +43,10 @@ class NotionCreatePage extends Node {
         console.log("vals", vals);
         this.setStatus("PROGRESS", "creating notion page...");
         var fetch = require("node-fetch"); // or fetch() is native in browsers
-        let config_body = {};
+        let config_body = {
+            parent: {},
+            properties: vals.properties
+        };
         if(vals.parent_type === 'database'){
             config_body["parent"]["database_id"] = getDatabaseId(vals.url);
         }

@@ -11,7 +11,7 @@ const getPageId = (url) => {
     let indexOfDash = url.lastIndexOf('-');
     let indexOfHash = url.lastIndexOf('#');
     let len = indexOfHash > indexOfDash ? indexOfHash : url.length;
-    return url.substring(indexOfDash+1 , indexOfHash );
+    return url.substring(indexOfDash+1 , len );
 }
 
 const getBlockId = (url) => {
