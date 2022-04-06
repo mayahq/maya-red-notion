@@ -32,14 +32,6 @@ class NotionQueryDb extends Node {
         // Do something on initialization of node
     }
 
-    async refreshTokens() {
-        const newTokens = await refresh(this)
-        await this.tokens.set(newTokens)
-        return newTokens
-    }
-
-
-
     async onMessage(msg, vals) {
         this.setStatus("PROGRESS", "Querying notion database...");
 
