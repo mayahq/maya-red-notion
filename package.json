@@ -15,8 +15,9 @@
   },
   "homepage": "#readme",
   "dependencies": {
-    "@mayahq/module-sdk": "^0.4.11",
-    "@notionhq/client": "^0.4.4"
+    "@mayahq/module-sdk": "file:../../module-sdk",
+    "@notionhq/client": "^0.4.4",
+    "axios": "^0.26.1"
   },
   "nodepath": "src/nodes",
   "nodeRedModuleName": "maya-red-notion",
