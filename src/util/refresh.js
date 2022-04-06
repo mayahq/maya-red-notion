@@ -18,7 +18,7 @@ async function refresh(node, { force = false } = {}) {
 
         if (!force) {
             const { lastUpdated } = localTokens
-            if (Date.now() - lastUpdated < 1*HOUR - 2*MINUTE) {
+            if (Date.now() - lastUpdated < 8*HOUR - 2*MINUTE) {
                 console.log('Tokens were already updated in local cache, no need to refresh', )
                 console.log('New tokens:', localTokens)
                 tokenControl.vals = { ...(tokenControl.vals), ...localTokens, fromCache: true }
@@ -30,7 +30,7 @@ async function refresh(node, { force = false } = {}) {
             console.log('Acquired remote token lock')
             const { access_token, refresh_token, lastUpdated, referenceId } = tokens
 
-            if (Date.now() - lastUpdated < 1*HOUR - 2*MINUTE) {
+            if (Date.now() - lastUpdated < 8*HOUR - 2*MINUTE) {
                 console.log('Tokens were already updated, no need to refresh')
                 console.log('New tokens:', tokens)
                 tokenControl.vals = { ...(tokenControl.vals), ...tokens }
