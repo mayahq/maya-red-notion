@@ -4,7 +4,9 @@ const {
     fields
 } = require('@mayahq/module-sdk')
 const { getDatabaseId } = require("../../util")
+const { Client } = require('@notionhq/client')
 const makeRequestWithRefresh = require('../../util/reqWithRefresh')
+
 
 class NotionRetrieveDb extends Node {
     constructor(node, RED, opts) {
@@ -30,6 +32,7 @@ class NotionRetrieveDb extends Node {
     }
 
     async onMessage(msg, vals) {
+        const notion = new Client({ auth: this.tokens.vals.access_token })
         this.setStatus("PROGRESS", "retrieving notion database...");
         const databaseId = getDatabaseId(vals.url)
 
@@ -38,12 +41,13 @@ class NotionRetrieveDb extends Node {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${this.tokens.vals.access_token}`,
-                "Notion-Version": "2021-08-16"
+                "Notion-Version": "2022-06-28"
             }
         }
         try {
-            const response = await makeRequestWithRefresh(this, request)
-            msg.payload = response.data
+            const response = await notion.databases.retrieve({ database_id: databaseId })
+            // const response = await makeRequestWithRefresh(this, request)
+            msg.payload = response
             this.setStatus("SUCCESS", "Fetched");
             return msg;
         }

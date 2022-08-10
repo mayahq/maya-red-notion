@@ -16,7 +16,7 @@
   "homepage": "#readme",
   "dependencies": {
     "@mayahq/module-sdk": "^2.2.1",
-    "@notionhq/client": "^0.4.4",
+    "@notionhq/client": "^0.4.13",
     "axios": "^0.26.1"
   },
   "nodepath": "src/nodes",
