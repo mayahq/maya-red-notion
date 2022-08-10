@@ -4,7 +4,8 @@ const {
     fields
 } = require('@mayahq/module-sdk')
 
-const makeRequestWithRefresh = require('../../util/reqWithRefresh')
+const makeRequestWithRefresh = require('../../util/reqWithRefresh');
+const { createRowFromPage } = require('../../util/tableTypeData');
 
 class NotionSearch extends Node {
     constructor(node, RED, opts) {
@@ -52,6 +53,12 @@ class NotionSearch extends Node {
         }
         try {
             const response = await makeRequestWithRefresh(this, request)
+            
+            try {
+                const table = response.data.results.map(page => createRowFromPage(page))
+                msg.table = table
+            } catch (e) {}
+
             msg.payload = response.data
             this.setStatus("SUCCESS", "Fetched");
             return msg;

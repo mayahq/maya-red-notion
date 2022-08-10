@@ -108,6 +108,53 @@ function getNotionPropertyValue(val) {
     }
 }
 
+function createRowFromPage(page) {
+    let titleVal = ''
+    if (page.object === 'page') {
+        const titleProp = Object.values(page.properties).find(prop => prop.type === 'title')
+        if (titleProp.title.length > 0) {
+            titleVal = titleProp.title[0].text.content
+        }
+    } else {
+        const titleProp = page.title
+        if (titleProp && titleProp.length > 0) {
+            titleVal = titleProp[0].text.content
+        }
+    }
+
+    return {
+        id: {
+            type: 'string',
+            value: page.id
+        },
+        title: {
+            type: 'title',
+            value: titleVal
+        },
+        archived: {
+            type: 'boolean',
+            value: page.archived
+        },
+        createdBy: {
+            type: 'user',
+            value: page.created_by ? page.created_by.id : ''
+        },
+        createdTime: {
+            type: 'date',
+            value: page.created_time
+        },
+        lastEditedTime: {
+            type: 'date',
+            value: page.last_edited_time
+        },
+        url: {
+            type: 'url',
+            value: page.url
+        },
+
+    }
+}
+
 /**
  * 
  * @param {import('./types').TableTypeData} data 
@@ -130,5 +177,6 @@ function convertToNotionProperties(data) {
 
 module.exports = {
     validateTableTypeData,
-    convertToNotionProperties
+    convertToNotionProperties,
+    createRowFromPage
 }
