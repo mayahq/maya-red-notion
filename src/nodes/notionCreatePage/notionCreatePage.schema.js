@@ -5,6 +5,7 @@ const {
 } = require('@mayahq/module-sdk');
 const makeRequestWithRefresh = require('../../util/reqWithRefresh')
 const { getPageId, getDatabaseId } = require("../../util");
+const { validateTableTypeData, convertToNotionProperties } = require('../../util/tableTypeData');
 
 class NotionCreatePage extends Node {
     constructor(node, RED, opts) {
@@ -36,10 +37,15 @@ class NotionCreatePage extends Node {
 
     async onMessage(msg, vals) {
         this.setStatus("PROGRESS", "Creating notion page...");
+        
+        let properties = vals.properties
+        if (validateTableTypeData(properties)) {
+            properties = convertToNotionProperties(properties)
+        }
 
         let configBody = {
             parent: {},
-            properties: vals.properties
+            properties: properties
         };
         if (vals.parent_type === 'database') {
             configBody["parent"]["database_id"] = getDatabaseId(vals.url);
