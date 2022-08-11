@@ -5,6 +5,7 @@ const {
 } = require('@mayahq/module-sdk')
 const makeRequestWithRefresh = require('../../util/reqWithRefresh')
 const { getPageId } = require("../../util")
+const { validateTableUpdateTypeData, validateRowUpdateTypeData, convertToNotionProperties } = require('../../util/tableTypeData')
 
 class NotionUpdatePage extends Node {
     constructor(node, RED, opts) {
@@ -20,11 +21,10 @@ class NotionUpdatePage extends Node {
         category: 'Maya Red Notion',
         isConfig: false,
         fields: {
-            url: new fields.Typed({ type: 'str', defaultVal: '', allowedTypes: ['msg', 'flow', 'global'] }),
+            pageId: new fields.Typed({ type: 'str', defaultVal: '', allowedTypes: ['msg', 'flow', 'global'] }),
             properties: new fields.Typed({ type: 'json', defaultVal: '{}', allowedTypes: ['msg', 'flow', 'global'] }),
             archived: new fields.Select({ options: ['true', 'false', 'null'], defaultVal: 'null' }),
         },
-
     })
 
     onInit() {
@@ -33,10 +33,18 @@ class NotionUpdatePage extends Node {
 
     async onMessage(msg, vals) {
         this.setStatus("PROGRESS", "Updating notion page");
-        let page_id = getPageId(vals.url)
+        let page_id = vals.pageId
         let configBody = {};
 
-        if (vals.properties && Object.keys(vals.properties).length > 0) configBody["properties"] = vals.properties;
+        let properties = vals.properties
+        const isTableUpdateType = validateRowUpdateTypeData(properties)
+        console.log('isTableUpdateType', isTableUpdateType, properties)
+        if (isTableUpdateType) {
+            page_id = properties._identifier.value
+            properties = convertToNotionProperties(properties.fields)
+        }
+
+        if (vals.properties && Object.keys(vals.properties).length > 0) configBody["properties"] = properties;
         if (vals.archived !== 'null') configBody["archived"] = vals.archived === 'true';
         
         const request = {
