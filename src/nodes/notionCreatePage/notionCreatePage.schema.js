@@ -37,10 +37,10 @@ class NotionCreatePage extends Node {
 
     async onMessage(msg, vals) {
         this.setStatus("PROGRESS", "Creating notion page...");
-        
+
         let properties = vals.properties
-        if (validateTableTypeData(properties)) {
-            properties = convertToNotionProperties(properties)
+        if (validateTableTypeData(properties.fields)) {
+            properties = convertToNotionProperties(properties.fields)
         }
 
         let configBody = {
