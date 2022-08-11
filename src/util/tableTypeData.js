@@ -49,6 +49,11 @@ function validateTableUpdateTypeData(data) {
     return data.every(row => validateRowUpdateTypeData(row))
 }
 
+function convertNotionRichTextToString(richText) {
+    const textStrings = richText.map(textObj => textObj.plain_text)
+    return textStrings.join(' ')
+}
+
 /**
  * 
  * @param {import('./types').TableValue} val 
@@ -138,6 +143,81 @@ function getNotionPropertyValue(val) {
     }
 }
 
+function convertPropertyIntoTableType(notionProperty) {
+    const val = notionProperty
+    try {
+        switch (val.type) {
+            case 'url':
+            case 'email':
+            case 'phone_number':
+            case 'multi_select':
+            case 'files':
+            case 'checkbox':
+            case 'number':
+                return {
+                    type: val.type,
+                    value: val[val.type]
+                }
+            case 'date': {
+                if (typeof val.date === 'object') {
+                    if (Object.values(val.date).filter(x => x !== null).length === 1) {
+                        return {
+                            type: 'date',
+                            value: val.date.start
+                        }
+                    }
+                    return {
+                        type: 'date',
+                        value: val.date
+                    }
+                }
+                return {
+                    type: 'date',
+                    value: val.date
+                }
+            }
+            case 'status': {
+                return {
+                    type: 'status',
+                    value: val.status.name
+                }
+            }
+            case 'select': {
+                return {
+                    type: 'select',
+                    value: val.select.name
+                }
+            }
+            case 'rich_text': {
+                return {
+                    type: 'rich_text',
+                    value: convertNotionRichTextToString(val.rich_text)
+                }
+            }
+            case 'title': {
+                return {
+                    type: 'title',
+                    value: convertNotionRichTextToString(val.title)
+                }
+            }
+    
+        }
+    } catch (e) {
+        return {
+            type: val.type,
+            value: 'parse_error'
+        }
+    }
+}
+
+function createTablePagePropertyMapFromNotion(propertyMap) {
+    const res = {}
+    Object.keys(propertyMap).forEach(key => {
+        res[key] = convertPropertyIntoTableType(propertyMap[key])
+    })
+    return res
+}
+
 function createRowFromPage(page) {
     let titleVal = ''
     if (page.object === 'page') {
@@ -210,5 +290,6 @@ module.exports = {
     convertToNotionProperties,
     createRowFromPage,
     validateRowUpdateTypeData,
-    validateTableUpdateTypeData
+    validateTableUpdateTypeData,
+    createTablePagePropertyMapFromNotion
 }

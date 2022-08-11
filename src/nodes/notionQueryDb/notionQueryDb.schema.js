@@ -5,6 +5,7 @@ const {
 } = require('@mayahq/module-sdk')
 const { getDatabaseId } = require("../../util")
 const makeRequestWithRefresh = require ('../../util/reqWithRefresh')
+const { createTablePagePropertyMapFromNotion } = require('../../util/tableTypeData')
 
 class NotionQueryDb extends Node {
     constructor(node, RED, opts) {
@@ -58,7 +59,7 @@ class NotionQueryDb extends Node {
             const response = await makeRequestWithRefresh(this, request)
             msg.payload = response.data
             try {
-                msg.table = msg.payload.results.map(result => result.properties)
+                msg.table = msg.payload.results.map(result => createTablePagePropertyMapFromNotion(result.properties))
             } catch (e) {}
 
             this.setStatus("SUCCESS", "Fetched");
