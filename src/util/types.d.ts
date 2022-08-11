@@ -21,7 +21,7 @@ export type RowUpdateType = {
         value: string;
         type?: string // Additional data to tell module what kind of identifier is being used. For eg. email, id, etc
     },
-    fields: TableTypeData
+    fields: RowTypeData
 }
 
 /**

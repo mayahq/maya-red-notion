@@ -204,17 +204,26 @@ function convertPropertyIntoTableType(notionProperty) {
         }
     } catch (e) {
         return {
-            type: val.type,
+            type: null,
             value: 'parse_error'
         }
     }
 }
 
-function createTablePagePropertyMapFromNotion(propertyMap) {
-    const res = {}
+function createTablePagePropertyMapFromNotion(page) {
+    const propertyMap = page.properties
+    const res = {
+        _identifier: {
+            value: page.id,
+            type: 'id'
+        }
+    }
+    const fields = {}
     Object.keys(propertyMap).forEach(key => {
-        res[key] = convertPropertyIntoTableType(propertyMap[key])
+        fields[key] = convertPropertyIntoTableType(propertyMap[key])
     })
+
+    res.fields = fields
     return res
 }
 

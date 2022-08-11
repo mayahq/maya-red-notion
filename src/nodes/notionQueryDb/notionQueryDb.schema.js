@@ -59,10 +59,12 @@ class NotionQueryDb extends Node {
             const response = await makeRequestWithRefresh(this, request)
             msg.payload = response.data
             try {
-                msg.table = msg.payload.results.map(result => createTablePagePropertyMapFromNotion(result.properties))
-            } catch (e) {}
+                msg.table = msg.payload.results.map(result => createTablePagePropertyMapFromNotion(result))
+            } catch (e) {
+                console.log('brah', e)
+            }
 
-            this.setStatus("SUCCESS", "Fetched");
+            this.setStatus("SUCCESS", "Fetched successfully");
             return msg;
         }
         catch (err) {
