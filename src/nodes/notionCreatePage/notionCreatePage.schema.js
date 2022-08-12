@@ -36,39 +36,49 @@ class NotionCreatePage extends Node {
     }
 
     async onMessage(msg, vals) {
-        this.setStatus("PROGRESS", "Creating notion page...");
+        this.setStatus("PROGRESS", "Creating notion pages...");
 
-        let properties = vals.properties
-        if (validateTableTypeData(properties.fields)) {
-            properties = convertToNotionProperties(properties.fields)
+        let rows = vals.properties
+        if (!Array.isArray(rows)) {
+            rows = [rows]
+        } 
+        if (rows.every(row => validateTableTypeData(row.fields))) {
+            rows = rows.map(row => convertToNotionProperties(row.fields))
         }
 
-        let configBody = {
-            parent: {},
-            properties: properties
-        };
-        if (vals.parent_type === 'database') {
-            configBody["parent"]["database_id"] = getDatabaseId(vals.url);
-        } else {
-            configBody["parent"]["page_id"] = getPageId(vals.url);
-        }
-        if (vals.children && Object.keys(vals.children).length > 0) configBody["children"] = vals.children
-        if (vals.icon && Object.keys(vals.icon).length > 0) configBody["icon"] = vals.icon
-        if (vals.cover && Object.keys(vals.cover).length > 0) configBody["cover"] = vals.cover
+        const requests = []
+        rows.forEach(row => {
+            let configBody = {
+                parent: {},
+                properties: row
+            };
+            if (vals.parent_type === 'database') {
+                configBody["parent"]["database_id"] = getDatabaseId(vals.url);
+            } else {
+                configBody["parent"]["page_id"] = getPageId(vals.url);
+            }
+            if (vals.children && Object.keys(vals.children).length > 0) configBody["children"] = vals.children
+            if (vals.icon && Object.keys(vals.icon).length > 0) configBody["icon"] = vals.icon
+            if (vals.cover && Object.keys(vals.cover).length > 0) configBody["cover"] = vals.cover
+    
+            const request = {
+                url: `https://api.notion.com/v1/pages`,
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${this.tokens.vals.access_token}`,
+                    "Notion-Version": "2021-08-16"
+                },
+                data: configBody
+            }
 
-        const request = {
-            url: `https://api.notion.com/v1/pages`,
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${this.tokens.vals.access_token}`,
-                "Notion-Version": "2021-08-16"
-            },
-            data: configBody
-        }
+            requests.push(request)
+        })
+
         try {            
-            const response = await makeRequestWithRefresh(this, request)
-            msg.payload = response.data
-            this.setStatus("SUCCESS", "Notion page created")
+            const result = await Promise.all(requests.map(req => makeRequestWithRefresh(this, req)))
+            // const response = await makeRequestWithRefresh(this, request)
+            msg.payload = result
+            this.setStatus("SUCCESS", "Done")
             return msg;
         }
         catch (err) {
