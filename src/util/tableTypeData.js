@@ -59,86 +59,103 @@ function convertNotionRichTextToString(richText) {
  * @param {import('./types').TableValue} val 
  */
 function getNotionPropertyValue(val) {
-    switch (val.type.toLowerCase()) {
-        case 'title': {
-            if (typeof val.value === 'string') {
+    try {
+        switch (val.type.toLowerCase()) {
+            case 'title': {
+                if (typeof val.value === 'string') {
+                    return {
+                        title: [{
+                            type: 'text',
+                            text: { content: val.value }
+                        }]
+                    }
+                } 
                 return {
-                    title: [{
-                        type: 'text',
-                        text: { content: val.value }
-                    }]
+                    title: val.value
                 }
-            } 
-            return {
-                title: val.value
             }
-        }
-
-        case 'rich_text': {
-            if (typeof val.value === 'string') {
+    
+            case 'rich_text': {
+                if (typeof val.value === 'string') {
+                    return {
+                        rich_text: [{
+                            type: 'text',
+                            text: { content: val.value }
+                        }]
+                    }
+                }
+    
+                return {
+                    rich_text: val.value
+                }
+            }
+            
+            case 'number': {
+                return { number: parseFloat(val.value) }
+            }
+    
+            case 'select': {
+                return {
+                    select: { name: val.value }
+                }
+            }
+    
+            case 'status': {
+                return {
+                    status: { name: val.value }
+                }
+            }
+    
+            case 'date': {
+                if (typeof val.value === 'string') {
+                    return {
+                        date: { start: val.value }
+                    }
+                }
+                return {
+                    date: val.value
+                }
+            }
+    
+            case 'checkbox': {
+                let value = val.value
+                if (typeof value === 'string') {
+                    value = value === 'true'
+                }
+                return {
+                    checkbox: val.value
+                }
+            }
+    
+            case 'files': {
+                let value = val.value
+                if (!Array.isArray(value)) {
+                    value = [value]
+                }
+                return { files: value }
+            }
+    
+            case 'url':
+            case 'email':
+            case 'phone_number':
+            case 'multi_select': {
+                return { [val.type]: val.value }
+            }
+            default: {
                 return {
                     rich_text: [{
                         type: 'text',
-                        text: { content: val.value }
+                        text: { content: val.value.toString() }
                     }]
                 }
             }
-
-            return {
-                rich_text: val.value
-            }
         }
-        
-        case 'number': {
-            return { number: parseFloat(val.value) }
-        }
-
-        case 'select': {
-            return {
-                select: { name: val.value }
-            }
-        }
-
-        case 'status': {
-            return {
-                status: { name: val.value }
-            }
-        }
-
-        case 'date': {
-            if (typeof val.value === 'string') {
-                return {
-                    date: { start: val.value }
-                }
-            }
-            return {
-                date: val.value
-            }
-        }
-
-        case 'checkbox': {
-            let value = val.value
-            if (typeof value === 'string') {
-                value = value === 'true'
-            }
-            return {
-                checkbox: val.value
-            }
-        }
-
-        case 'files': {
-            let value = val.value
-            if (!Array.isArray(value)) {
-                value = [value]
-            }
-            return { files: value }
-        }
-
-        case 'url':
-        case 'email':
-        case 'phone_number':
-        case 'multi_select': {
-            return { [val.type]: val.value }
+    } catch (e) {
+        return {
+            rich_text: [{
+                type: 'text',
+                text: { content: 'maya_parse_error' }
+            }]
         }
     }
 }
