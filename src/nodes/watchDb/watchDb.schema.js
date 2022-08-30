@@ -88,7 +88,7 @@ class WatchDb extends Node {
               break;
             }
           }
-          msg.ogdata = msg.payload.results;
+          //msg.ogdata = msg.payload.results;
           if (msg.payload.results[0])
             context.flow.set("last_edit_id", msg.payload.results[0].id);
           console.log(
