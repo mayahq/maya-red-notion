@@ -108,6 +108,7 @@ class WatchDb extends Node {
               createTablePagePropertyMapFromNotion(result)
             );
             msg.table.reverse();
+            msg.rowData = msg.table;
           } catch (e) {
             console.log("brah", e);
           }
