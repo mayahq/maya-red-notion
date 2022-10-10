@@ -1,5 +1,6 @@
 const { Node, Schema, fields } = require("@mayahq/module-sdk")
 const { getDatabaseId } = require("../../util")
+const { getPageId } = require("../../util")
 const { Client } = require("@notionhq/client")
 const makeRequestWithRefresh = require("../../util/reqWithRefresh")
 const NotionConfig = require("../notionConfig/notionConfig.schema")
@@ -29,7 +30,7 @@ class NotionRetrievePage extends Node {
   async onMessage(msg, vals) {
     const notion = new Client({ auth: this.tokens.vals.access_token })
     this.setStatus("PROGRESS", "Retrieving notion page...")
-    const pageId = getDatabaseId(vals.NotionConfig.url)
+    const pageId = getPageId(vals.NotionConfig.url)
 
     try {
       // const response = await notion.databases.retrieve({ database_id: databaseId })
