@@ -1,6 +1,6 @@
 <script type='text/javascript'>
-    RED.nodes.registerType("notion-retrieve-page", {
-        category: "Maya Red Notion",
+    RED.nodes.registerType("notion-config", {
+        category: "config",
         color: "#8BBDD9",
         defaults: {
             name: {
@@ -9,20 +9,42 @@
             isProfileConfigNode: {
                 value: false
             },
-            NotionConfig: {
+            url: {
                 value: "",
-                type: "notion-config"
+                required: false
+            },
+            payloadTypeurl: {
+                value: "str"
             },
         },
         inputs: 1,
         outputs: 1,
         icon: "fa-file-code-o.png",
         label: function() {
-            return this.name || "notion-retrieve-page"
+            return this.name || "notion-config"
         },
-        paletteLabel: "notion-retrieve-page",
+        paletteLabel: "notion-config",
         exportable: true,
-        oneditprepare: function() {},
+        oneditprepare: function() {
+            if (this.payloadTypeurl === null) {
+                if (this.url === "") {
+                    this.payloadTypeurl = "date"
+                } else {
+                    this.payloadTypeurl = "str"
+                }
+            } else if (this.payloadTypeurl === 'string' || this.payloadTypeurl === 'none') {
+                this.payloadTypeurl = "str"
+            }
+
+            $("#node-config-input-payloadTypeurl").val(this.payloadTypeurl)
+            $("#node-config-input-url").typedInput({
+                default: "str",
+                typeField: $("#node-config-input-payloadTypeurl"),
+                types: ["str", "msg", "flow", "global"]
+            })
+            $("#node-config-input-url").typedInput("type", this.payloadTypeurl)
+
+        },
         oneditsave: function() {},
         oneditcancel: function() {},
         oneditdelete: function() {},
@@ -32,18 +54,19 @@
     });
 </script>
 
-<script type="text/html" data-template-name="notion-retrieve-page">
+<script type="text/html" data-template-name="notion-config">
     <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
     </div>
     <div class="form-row">
-        <label for="node-input-NotionConfig">NotionConfig</label>
-        <input type="text" id="node-input-NotionConfig"></input>
+        <label for="node-config-input-url">url</label>
+        <input type="text" id="node-config-input-url"></input>
+        <input type="hidden" id="node-config-input-payloadTypeurl">
     </div>
 </script>
 
-<script type="text/html" data-help-name="notion-retrieve-page">
+<script type="text/html" data-help-name="notion-config">
     <h2>Description</h2>
     <p>Query opens tabs based on criteria like URL, muted status</p>
 

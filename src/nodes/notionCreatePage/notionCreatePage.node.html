@@ -9,35 +9,37 @@
             isProfileConfigNode: {
                 value: false
             },
-            url: {
-                value: ""
-            },
-            payloadTypeurl: {
-                value: "str"
+            NotionConfig: {
+                value: "",
+                type: "notion-config"
             },
             parent_type: {
                 value: "database"
             },
             properties: {
-                value: "{}"
+                value: "{}",
+                required: false
             },
             payloadTypeproperties: {
                 value: "json"
             },
             children: {
-                value: "{}"
+                value: "{}",
+                required: false
             },
             payloadTypechildren: {
                 value: "json"
             },
             icon: {
-                value: "{}"
+                value: "{}",
+                required: false
             },
             payloadTypeicon: {
                 value: "json"
             },
             cover: {
-                value: "{}"
+                value: "{}",
+                required: false
             },
             payloadTypecover: {
                 value: "json"
@@ -52,24 +54,6 @@
         paletteLabel: "notion-create-page",
         exportable: true,
         oneditprepare: function() {
-            if (this.payloadTypeurl === null) {
-                if (this.url === "") {
-                    this.payloadTypeurl = "date"
-                } else {
-                    this.payloadTypeurl = "str"
-                }
-            } else if (this.payloadTypeurl === 'string' || this.payloadTypeurl === 'none') {
-                this.payloadTypeurl = "str"
-            }
-
-            $("#node-input-payloadTypeurl").val(this.payloadTypeurl)
-            $("#node-input-url").typedInput({
-                default: "str",
-                typeField: $("#node-input-payloadTypeurl"),
-                types: ["msg", "flow", "global", "str"]
-            })
-            $("#node-input-url").typedInput("type", this.payloadTypeurl)
-
             const parent_typeselectFieldValues = ["database", "page"]
             parent_typeselectFieldValues.forEach((val) => {
                 $("#node-input-parent_type").append($("<option></option>").attr("value", val).text(val))
@@ -164,9 +148,8 @@
         <input type="text" id="node-input-name" style="width:70%;" placeholder="Name" />
     </div>
     <div class="form-row">
-        <label for="node-input-url">url</label>
-        <input type="text" id="node-input-url"></input>
-        <input type="hidden" id="node-input-payloadTypeurl">
+        <label for="node-input-NotionConfig">NotionConfig</label>
+        <input type="text" id="node-input-NotionConfig"></input>
     </div>
     <div class="form-row">
         <label for="node-input-parent_type">parent_type</label>
