@@ -15,7 +15,7 @@
   },
   "homepage": "#readme",
   "dependencies": {
-    "@mayahq/module-sdk": "^2.2.1",
+    "@mayahq/module-sdk": "^2.3.0",
     "@notionhq/client": "^0.4.13",
     "axios": "^0.26.1",
     "node-cron": "^3.0.2"
