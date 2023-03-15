@@ -76,7 +76,7 @@ class NotionQueryDb extends Node {
       const response = await makeRequestWithRefresh(this, request)
       msg.notionResults = response.data
       try {
-        msg.table = msg.payload.results.map((result) =>
+        msg.table = msg.notionResults.results.map((result) =>
           createTablePagePropertyMapFromNotion(result)
         )
         msg.rowData = msg.table
