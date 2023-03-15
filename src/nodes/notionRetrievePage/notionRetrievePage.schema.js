@@ -31,6 +31,7 @@ class NotionRetrievePage extends Node {
     const notion = new Client({ auth: this.tokens.vals.access_token })
     this.setStatus("PROGRESS", "Retrieving notion page...")
     const pageId = getPageId(vals.NotionConfig.url)
+    console.log('notionPageId', pageId)
 
     try {
       // const response = await notion.databases.retrieve({ database_id: databaseId })

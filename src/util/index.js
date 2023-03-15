@@ -6,10 +6,16 @@ const getDatabaseId = (url) => {
 }
 
 const getPageId = (url) => {
-    let indexOfDash = url.lastIndexOf('-');
-    let indexOfHash = url.lastIndexOf('#');
-    let len = indexOfHash > indexOfDash ? indexOfHash : url.length;
-    return url.substring(indexOfDash+1 , len );
+    //98847cd9c7604c71bda483ba6979fd0d
+    const urlPath = (new URL(url)).pathname
+    const rId = urlPath.substring(urlPath.lastIndexOf('/') + 1)
+    return [
+        rId.substring(0, 8),
+        rId.substring(8, 12),
+        rId.substring(12, 16),
+        rId.substring(16, 20),
+        rId.substring(20, 32)
+    ].join('-')
 }
 
 const getBlockId = (url) => {
