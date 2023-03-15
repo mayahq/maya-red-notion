@@ -13,7 +13,7 @@ class NotionUpdateDb extends Node {
 
   static schema = new Schema({
     name: "notion-update-db",
-    label: "notion-update-db",
+    label: "Update database",
     category: "Maya Red Notion",
     isConfig: false,
     fields: {

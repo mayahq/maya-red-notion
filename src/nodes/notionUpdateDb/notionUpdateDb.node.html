@@ -11,7 +11,8 @@
             },
             NotionConfig: {
                 value: "",
-                type: "notion-config"
+                type: "notion-config",
+                required: true
             },
             properties: {
                 value: "{}",
@@ -25,9 +26,9 @@
         outputs: 1,
         icon: "fa-file-code-o.png",
         label: function() {
-            return this.name || "notion-update-db"
+            return this.name || "Update database"
         },
-        paletteLabel: "notion-update-db",
+        paletteLabel: "Update database",
         exportable: true,
         oneditprepare: function() {
             if (this.payloadTypeproperties === null) {

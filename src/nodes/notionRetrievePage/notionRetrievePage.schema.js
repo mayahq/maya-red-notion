@@ -15,7 +15,7 @@ class NotionRetrievePage extends Node {
 
   static schema = new Schema({
     name: "notion-retrieve-page",
-    label: "notion-retrieve-page",
+    label: "Get page",
     category: "Maya Red Notion",
     isConfig: false,
     fields: {

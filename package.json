@@ -31,7 +31,6 @@
       "notion-create-page": "src/nodes/notionCreatePage/notionCreatePage.node.js",
       "notion-update-page": "src/nodes/notionUpdatePage/notionUpdatePage.node.js",
       "notion-retrieve-page": "src/nodes/notionRetrievePage/notionRetrievePage.node.js",
-      "watch-db": "src/nodes/watchDb/watchDb.node.js",
       "notion-config-node": "src/nodes/notionConfig/notionConfig.node.js"
     }
   },

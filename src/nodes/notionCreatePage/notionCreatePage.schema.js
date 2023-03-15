@@ -17,7 +17,7 @@ class NotionCreatePage extends Node {
 
   static schema = new Schema({
     name: "notion-create-page",
-    label: "notion-create-page",
+    label: "Create page",
     category: "Maya Red Notion",
     isConfig: false,
     fields: {

@@ -17,7 +17,7 @@ class NotionUpdatePage extends Node {
 
     static schema = new Schema({
         name: 'notion-update-page',
-        label: 'notion-update-page',
+        label: 'Update page',
         category: 'Maya Red Notion',
         isConfig: false,
         fields: {

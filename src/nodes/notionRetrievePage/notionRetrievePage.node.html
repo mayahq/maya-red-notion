@@ -11,16 +11,17 @@
             },
             NotionConfig: {
                 value: "",
-                type: "notion-config"
+                type: "notion-config",
+                required: true
             },
         },
         inputs: 1,
         outputs: 1,
         icon: "fa-file-code-o.png",
         label: function() {
-            return this.name || "notion-retrieve-page"
+            return this.name || "Get page"
         },
-        paletteLabel: "notion-retrieve-page",
+        paletteLabel: "Get page",
         exportable: true,
         oneditprepare: function() {},
         oneditsave: function() {},

@@ -11,7 +11,8 @@
             },
             NotionConfig: {
                 value: "",
-                type: "notion-config"
+                type: "notion-config",
+                required: true
             },
             parent_type: {
                 value: "database"
@@ -49,9 +50,9 @@
         outputs: 1,
         icon: "fa-file-code-o.png",
         label: function() {
-            return this.name || "notion-create-page"
+            return this.name || "Create page"
         },
-        paletteLabel: "notion-create-page",
+        paletteLabel: "Create page",
         exportable: true,
         oneditprepare: function() {
             const parent_typeselectFieldValues = ["database", "page"]

@@ -11,7 +11,8 @@
             },
             NotionConfig: {
                 value: "",
-                type: "notion-config"
+                type: "notion-config",
+                required: true
             },
             filter: {
                 value: "{}",
@@ -46,9 +47,9 @@
         outputs: 1,
         icon: "fa-file-code-o.png",
         label: function() {
-            return this.name || "notion-query-db"
+            return this.name || "Query database"
         },
-        paletteLabel: "notion-query-db",
+        paletteLabel: "Query database",
         exportable: true,
         oneditprepare: function() {
             if (this.payloadTypefilter === null) {

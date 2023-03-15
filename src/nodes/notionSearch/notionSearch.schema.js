@@ -17,7 +17,7 @@ class NotionSearch extends Node {
 
     static schema = new Schema({
         name: 'notion-search',
-        label: 'notion-search',
+        label: 'Search',
         category: 'Maya Red Notion',
         isConfig: false,
         fields: {

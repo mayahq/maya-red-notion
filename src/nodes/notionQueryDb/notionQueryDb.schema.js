@@ -16,7 +16,7 @@ class NotionQueryDb extends Node {
 
   static schema = new Schema({
     name: "notion-query-db",
-    label: "notion-query-db",
+    label: "Query database",
     category: "Maya Red Notion",
     isConfig: false,
     fields: {

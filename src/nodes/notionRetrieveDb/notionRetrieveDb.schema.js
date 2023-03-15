@@ -14,7 +14,7 @@ class NotionRetrieveDb extends Node {
 
   static schema = new Schema({
     name: "notion-retrieve-db",
-    label: "notion-retrieve-db",
+    label: "Get database properties",
     category: "Maya Red Notion",
     isConfig: false,
     fields: {
@@ -44,7 +44,7 @@ class NotionRetrieveDb extends Node {
         database_id: databaseId,
       })
       // const response = await makeRequestWithRefresh(this, request)
-      msg.payload = response
+      msg.notionDatabase = response
       this.setStatus("SUCCESS", "Fetched")
       return msg
     } catch (err) {
